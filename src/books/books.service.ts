@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from 'src/entities/book.entity';
+import { BookDto } from 'src/dtos/book.dto';
 
 @Injectable()
 export class BooksService {
@@ -30,10 +31,10 @@ export class BooksService {
         return book;
     }
 
-    async addBook(book: Book) {
+    async addBook(book: BookDto) {
         let result = null;
         try {
-            if (book.id) delete book.id;
+            //if (book.id) delete book.id;
             result = await this.booksRepository.save(book);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
@@ -41,10 +42,10 @@ export class BooksService {
         return result;
     }
 
-    async updateBook(id: string, book: Book) {
+    async updateBook(id: string, book: BookDto) {
         let result = null;
         try {
-            if (book.id) delete book.id;
+            //if (book.id) delete book.id;
             result = await this.booksRepository.update(id, book);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);

@@ -34,7 +34,8 @@ export class Book {
     isbn13: string
     
     @Column({
-        type: 'varchar'
+        type: 'varchar',
+        nullable: true
     })
     publisher: string
 

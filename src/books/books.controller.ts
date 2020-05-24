@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { Book } from 'src/entities/book.entity';
+import { BookDto } from 'src/dtos/book.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('books')
+@UseGuards(JwtAuthGuard)
+@Controller('api/books')
 export class BooksController {
     constructor(private booksService: BooksService) {}
 
@@ -17,12 +19,12 @@ export class BooksController {
     }
 
     @Post()
-    addBook(@Body() book: Book) {
+    addBook(@Body() book: BookDto) {
         return this.booksService.addBook(book);
     }
 
     @Put(':id')
-    updateBook(@Param() params, @Body() book: Book) {
+    updateBook(@Param() params, @Body() book: BookDto) {
         return this.booksService.updateBook(params.id, book);
     }
 
