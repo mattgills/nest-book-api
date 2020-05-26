@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsArray, Min, IsEnum, IsOptional, MinLength, MaxLength, IsEmpty } from "class-validator";
-import { MediaType } from "src/entities/book.entity";
+import { MediaType } from "src/shared/entities/book.entity";
 
 export class BookDto {
     @IsEmpty()

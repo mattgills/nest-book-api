@@ -1,8 +1,8 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Book } from 'src/entities/book.entity';
-import { BookDto } from 'src/dtos/book.dto';
+import { Book } from 'src/shared/entities/book.entity';
+import { BookDto } from 'src/shared/dtos/book.dto';
 
 @Injectable()
 export class BooksService {

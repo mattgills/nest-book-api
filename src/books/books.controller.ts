@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { BookDto } from 'src/dtos/book.dto';
+import { BookDto } from 'src/shared/dtos/book.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
