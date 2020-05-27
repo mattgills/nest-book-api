@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Reading } from 'src/shared/entities/reading.entity';
 import { ReadingDto } from 'src/shared/dtos/reading.dto';
 import { Session } from 'src/shared/entities/session.entity';
+import { User } from 'src/shared/entities/user.entity';
 
 
 @Injectable()
@@ -15,23 +16,24 @@ export class ReadingsService {
         private sessionsRepository: Repository<Session>
     ) {}
 
-    async findAll(): Promise<Reading[]> {
+    async findAll(user: User): Promise<Reading[]> {
         let readings = null;
         try {
-            readings = await this.readingsRepository.find();
+            readings = await this.readingsRepository.find({ where: { user: user.id } });
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
         return readings;
     }
 
-    async findOne(id: string): Promise<Reading> {
+    async findOne(id: string, user: User): Promise<Reading> {
         let reading = null;
         try{
-            reading = await this.readingsRepository.findOne(id);
+            reading = await this.readingsRepository.findOne(id, { where: { user: user.id } });
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
+        if (!reading) throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
         return reading;
     }
 

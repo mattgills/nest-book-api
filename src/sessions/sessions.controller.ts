@@ -1,20 +1,23 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { SessionDto } from 'src/shared/dtos/session.dto';
 import { SetUserInterceptor } from 'src/shared/interceptors/set-user.interceptor';
+import { User } from 'src/shared/decorators/user.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('/api/sessions')
+@UseGuards(JwtAuthGuard)
+@Controller('api/sessions')
 export class SessionsController {
     constructor(private sessionsService: SessionsService) {}
 
     @Get()
-    getSessions() {
-        return this.sessionsService.findAll();
+    getSessions(@User() user) {
+        return this.sessionsService.findAll(user);
     }
 
     @Get(':id')
-    getSession(@Param() params) {
-        return this.sessionsService.findOne(params.id);
+    getSession(@Param() params, @User() user) {
+        return this.sessionsService.findOne(params.id, user);
     }
 
     @UseInterceptors(SetUserInterceptor)
