@@ -33,12 +33,12 @@ export class ReadingsController {
     }
 
     @Delete(':id')
-    deleteReading(@Param() params) {
-        return this.readingsService.deleteReading(params.id);
+    deleteReading(@Param() params, @User() user) {
+        return this.readingsService.deleteReading(params.id, user);
     }
 
     @Get(':id/sessions')
-    getReadingsForBook(@Param() params) {
-        return this.readingsService.findSessionsByReadingId(params.id);
+    getReadingsForBook(@Param() params, @User() user) {
+        return this.readingsService.findSessionsByReadingId(params.id, user);
     }
 }

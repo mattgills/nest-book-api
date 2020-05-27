@@ -33,7 +33,7 @@ export class SessionsController {
     }
 
     @Delete(':id')
-    deleteSession(@Param() params) {
-        return this.sessionsService.deleteSession(params.id);
+    deleteSession(@Param() params, @User() user) {
+        return this.sessionsService.deleteSession(params.id, user);
     }
 }

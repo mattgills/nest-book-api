@@ -29,6 +29,7 @@ export class BooksService {
         let book = null;
         try{
             book = await this.booksRepository.findOne(id);
+            if (!book) throw new Error('Bad Request');
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +39,6 @@ export class BooksService {
     async addBook(book: BookDto) {
         let result = null;
         try {
-            //if (book.id) delete book.id;
             result = await this.booksRepository.save(book);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
@@ -49,7 +49,6 @@ export class BooksService {
     async updateBook(id: string, book: BookDto) {
         let result = null;
         try {
-            //if (book.id) delete book.id;
             result = await this.booksRepository.update(id, book);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
@@ -58,8 +57,11 @@ export class BooksService {
     }
 
     async deleteBook(id: string) {
+        let book = null;
         let result = null;
         try {
+            book = await this.booksRepository.findOne(id);
+            if (!book) throw new Error('Bad Request');
             result = await this.booksRepository.delete(id);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);

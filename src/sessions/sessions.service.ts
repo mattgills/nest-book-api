@@ -26,6 +26,7 @@ export class SessionsService {
         let session = null;
         try{
             session = await this.sessionsRepository.findOne(id, { where: { user: user.id } });
+            if (!session) throw new Error('Bad Request');
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
@@ -35,7 +36,6 @@ export class SessionsService {
     async addSession(session: SessionDto) {
         let result = null;
         try {
-            //if (session.id) delete session.id;
             result = await this.sessionsRepository.save(session);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
@@ -46,7 +46,6 @@ export class SessionsService {
     async updateSession(id: string, session: SessionDto) {
         let result = null;
         try {
-            //if (session.id) delete session.id;
             result = await this.sessionsRepository.update(id, session);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
@@ -54,9 +53,12 @@ export class SessionsService {
         return result;
     }
 
-    async deleteSession(id: string) {
+    async deleteSession(id: string, user: User) {
+        let session = null;
         let result = null;
         try {
+            session = await this.sessionsRepository.findOne(id, { where: { user: user.id } });
+            if (!session) throw new Error('Bad Request');
             result = await this.sessionsRepository.delete(id);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
