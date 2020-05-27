@@ -32,4 +32,9 @@ export class BooksController {
     deleteBook(@Param() params) {
         return this.booksService.deleteBook(params.id);
     }
+
+    @Get(':id/readings')
+    getReadingsForBook(@Param() params) {
+        return this.booksService.findReadingsByBookId(params.id);
+    }
 }

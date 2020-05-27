@@ -3,12 +3,15 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from 'src/shared/entities/book.entity';
 import { BookDto } from 'src/shared/dtos/book.dto';
+import { Reading } from 'src/shared/entities/reading.entity';
 
 @Injectable()
 export class BooksService {
     constructor(
         @InjectRepository(Book)
-        private booksRepository: Repository<Book>
+        private booksRepository: Repository<Book>,
+        @InjectRepository(Reading)
+        private readingsRepository: Repository<Reading>
     ) {}
 
     async findAll(): Promise<Book[]> {
@@ -61,5 +64,18 @@ export class BooksService {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
         return result;
+    }
+
+    async findReadingsByBookId(id: string): Promise<Reading[]> {
+        let readings = null;
+        try {
+            readings = await this.readingsRepository
+                .createQueryBuilder('reading')
+                .where('reading.bookId = :id', { id })
+                .getMany();
+        } catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return readings;
     }
 }
