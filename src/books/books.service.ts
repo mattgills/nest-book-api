@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from 'src/shared/entities/book.entity';
 import { BookDto } from 'src/shared/dtos/book.dto';
 import { Reading } from 'src/shared/entities/reading.entity';
+import { Session } from 'src/shared/entities/session.entity';
 
 @Injectable()
 export class BooksService {
@@ -71,7 +72,7 @@ export class BooksService {
         try {
             readings = await this.readingsRepository
                 .createQueryBuilder('reading')
-                .where('reading.bookId = :id', { id })
+                .where('reading.book = :id', { id })
                 .getMany();
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);

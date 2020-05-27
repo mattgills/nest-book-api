@@ -25,9 +25,9 @@ export class Session {
 
     @ManyToOne(type => Reading, { nullable: false })
     @JoinColumn({ name: 'readingId' })
-    readingId: Reading;
+    reading: Reading;
 
     @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: 'userId' })
-    userId: User;
+    user: User;
 }

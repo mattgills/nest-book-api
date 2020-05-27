@@ -17,9 +17,9 @@ export class SessionDto {
 
     @IsNotEmpty()
     @IsUUID()
-    readingId: Reading;
+    reading: Reading;
 
     @IsNotEmpty()
     @IsUUID()
-    userId: User;
+    user: User;
 }

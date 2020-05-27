@@ -20,9 +20,9 @@ export class Reading {
     
     @ManyToOne(type => Book, { nullable: false })
     @JoinColumn({ name: 'bookId' })
-    bookId: Book;
+    book: Book;
 
     @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: 'userId' })
-    userId: User
+    user: User
 }

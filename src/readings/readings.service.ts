@@ -3,13 +3,16 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reading } from 'src/shared/entities/reading.entity';
 import { ReadingDto } from 'src/shared/dtos/reading.dto';
+import { Session } from 'src/shared/entities/session.entity';
 
 
 @Injectable()
 export class ReadingsService {
     constructor(
         @InjectRepository(Reading)
-        private readingsRepository: Repository<Reading>
+        private readingsRepository: Repository<Reading>,
+        @InjectRepository(Session)
+        private sessionsRepository: Repository<Session>
     ) {}
 
     async findAll(): Promise<Reading[]> {
@@ -62,5 +65,19 @@ export class ReadingsService {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
         return result;
+    }
+
+    
+    async findSessionsByReadingId(id: string): Promise<Reading[]> {
+        let sessions = null;
+        try {
+            sessions = await this.sessionsRepository
+                .createQueryBuilder('session')
+                .where('session.reading = :id', { id })
+                .getMany();
+        } catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return sessions;
     }
 }

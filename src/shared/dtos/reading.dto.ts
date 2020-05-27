@@ -16,9 +16,9 @@ export class ReadingDto {
 
     @IsNotEmpty()
     @IsUUID()
-    bookId: Book;
+    book: Book;
 
     @IsNotEmpty()
     @IsUUID()
-    userId: User;
+    user: User;
 }
