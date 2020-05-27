@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books/books.module';
 import { ReadingsModule } from './readings/readings.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { SetUserInterceptor } from './shared/interceptors/set-user.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
@@ -16,6 +18,12 @@ import { SessionsModule } from './sessions/sessions.module';
     SessionsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SetUserInterceptor,
+    }
+  ],
 })
 export class AppModule {}

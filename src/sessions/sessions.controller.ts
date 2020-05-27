@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseInterceptors } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { SessionDto } from 'src/shared/dtos/session.dto';
+import { SetUserInterceptor } from 'src/shared/interceptors/set-user.interceptor';
 
 @Controller('/api/sessions')
 export class SessionsController {
@@ -16,11 +17,13 @@ export class SessionsController {
         return this.sessionsService.findOne(params.id);
     }
 
+    @UseInterceptors(SetUserInterceptor)
     @Post()
     addSession(@Body() session: SessionDto) {
         return this.sessionsService.addSession(session);
     }
 
+    @UseInterceptors(SetUserInterceptor)
     @Put(':id')
     updateSession(@Param() params, @Body() session: SessionDto) {
         return this.sessionsService.updateSession(params.id, session);
