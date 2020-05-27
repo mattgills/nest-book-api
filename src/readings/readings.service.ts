@@ -1,0 +1,66 @@
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Reading } from 'src/shared/entities/reading.entity';
+import { ReadingDto } from 'src/shared/dtos/reading.dto';
+
+
+@Injectable()
+export class ReadingsService {
+    constructor(
+        @InjectRepository(Reading)
+        private readingsRepository: Repository<Reading>
+    ) {}
+
+    async findAll(): Promise<Reading[]> {
+        let readings = null;
+        try {
+            readings = await this.readingsRepository.find();
+        } catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return readings;
+    }
+
+    async findOne(id: string): Promise<Reading> {
+        let reading = null;
+        try{
+            reading = await this.readingsRepository.findOne(id);
+        } catch (err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return reading;
+    }
+
+    async addReading(reading: ReadingDto) {
+        let result = null;
+        try {
+            //if (reading.id) delete reading.id;
+            result = await this.readingsRepository.save(reading);
+        } catch (err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
+
+    async updateReading(id: string, reading: ReadingDto) {
+        let result = null;
+        try {
+            //if (reading.id) delete reading.id;
+            result = await this.readingsRepository.update(id, reading);
+        } catch (err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
+
+    async deleteReading(id: string) {
+        let result = null;
+        try {
+            result = await this.readingsRepository.delete(id);
+        } catch (err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
+}
