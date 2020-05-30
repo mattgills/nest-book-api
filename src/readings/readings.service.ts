@@ -14,9 +14,7 @@ export class ReadingsService {
         @InjectRepository(Reading)
         private readingsRepository: Repository<Reading>,
         @InjectRepository(Session)
-        private sessionsRepository: Repository<Session>,
-        @InjectRepository(Book)
-        private booksRepository: Repository<Book>,
+        private sessionsRepository: Repository<Session>
     ) {}
 
     async findAll(user: User): Promise<Reading[]> {
