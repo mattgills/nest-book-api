@@ -14,7 +14,9 @@ export class ReadingsService {
         @InjectRepository(Reading)
         private readingsRepository: Repository<Reading>,
         @InjectRepository(Session)
-        private sessionsRepository: Repository<Session>
+        private sessionsRepository: Repository<Session>,
+        @InjectRepository(Book)
+        private booksRepository: Repository<Book>,
     ) {}
 
     async findAll(user: User): Promise<Reading[]> {
@@ -28,13 +30,17 @@ export class ReadingsService {
     }
 
     async findBooksFromUsersReadings(user: User): Promise<Book[]> {
-        let books = null;
+        let readings: Reading[] = null;
+        let books: Book[] = null;
         try {
-            books = await this.readingsRepository
+            readings = await this.readingsRepository
                 .createQueryBuilder('reading')
+                .select(['reading.id', 'reading.book'])
                 .distinctOn(['reading.book'])
                 .innerJoinAndSelect('reading.book', 'book')
                 .getMany();
+            // Extract books from unique books in readings array
+            books = readings.map(reading => reading.book);
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
