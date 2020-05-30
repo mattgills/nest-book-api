@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from 'src/shared/dtos/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -14,8 +14,8 @@ export class UsersController {
     }
 
     @Get(':id')
-    getBook(@Param() params) {
-        return this.usersService.findOne(params.id);
+    getBook(@Param('id', ParseUUIDPipe) id: string) {
+        return this.usersService.findOne(id);
     }
 
     @Post()
@@ -29,7 +29,7 @@ export class UsersController {
     // }
 
     @Delete(':id')
-    deleteBook(@Param() params) {
-        return this.usersService.deleteUser(params.id);
+    deleteBook(@Param('id', ParseUUIDPipe) id: string) {
+        return this.usersService.deleteUser(id);
     }
 }

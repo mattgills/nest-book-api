@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { BookDto } from 'src/shared/dtos/book.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -14,8 +14,8 @@ export class BooksController {
     }
 
     @Get(':id')
-    getBook(@Param() params) {
-        return this.booksService.findOne(params.id);
+    getBook(@Param('id', ParseUUIDPipe) id: string) {
+        return this.booksService.findOne(id);
     }
 
     @Post()
@@ -24,17 +24,17 @@ export class BooksController {
     }
 
     @Put(':id')
-    updateBook(@Param() params, @Body() book: BookDto) {
-        return this.booksService.updateBook(params.id, book);
+    updateBook(@Param('id', ParseUUIDPipe) id: string, @Body() book: BookDto) {
+        return this.booksService.updateBook(id, book);
     }
 
     @Delete(':id')
-    deleteBook(@Param() params) {
-        return this.booksService.deleteBook(params.id);
+    deleteBook(@Param('id', ParseUUIDPipe) id: string) {
+        return this.booksService.deleteBook(id);
     }
 
     @Get(':id/readings')
-    getReadingsForBook(@Param() params) {
-        return this.booksService.findReadingsByBookId(params.id);
+    getReadingsForBook(@Param('id', ParseUUIDPipe) id: string) {
+        return this.booksService.findReadingsByBookId(id);
     }
 }

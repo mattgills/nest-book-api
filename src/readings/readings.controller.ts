@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, UseInterceptors, ParseUUIDPipe } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ReadingsService } from './readings.service';
 import { ReadingDto } from 'src/shared/dtos/reading.dto';
@@ -16,8 +16,8 @@ export class ReadingsController {
     }
 
     @Get(':id')
-    getReading(@Param() params, @User() user) {
-        return this.readingsService.findOne(params.id, user);
+    getReading(@Param('id', ParseUUIDPipe) id: string, @User() user) {
+        return this.readingsService.findOne(id, user);
     }
 
     @UseInterceptors(SetUserInterceptor)
@@ -28,17 +28,17 @@ export class ReadingsController {
 
     @UseInterceptors(SetUserInterceptor)
     @Put(':id')
-    updateReading(@Param() params, @Body() reading: ReadingDto) {
-        return this.readingsService.updateReading(params.id, reading);
+    updateReading(@Param('id', ParseUUIDPipe) id: string, @Body() reading: ReadingDto) {
+        return this.readingsService.updateReading(id, reading);
     }
 
     @Delete(':id')
-    deleteReading(@Param() params, @User() user) {
-        return this.readingsService.deleteReading(params.id, user);
+    deleteReading(@Param('id', ParseUUIDPipe) id: string, @User() user) {
+        return this.readingsService.deleteReading(id, user);
     }
 
     @Get(':id/sessions')
-    getReadingsForBook(@Param() params, @User() user) {
-        return this.readingsService.findSessionsByReadingId(params.id, user);
+    getReadingsForBook(@Param('id', ParseUUIDPipe) id: string, @User() user) {
+        return this.readingsService.findSessionsByReadingId(id, user);
     }
 }

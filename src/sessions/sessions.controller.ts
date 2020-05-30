@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseInterceptors, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { SessionDto } from 'src/shared/dtos/session.dto';
 import { SetUserInterceptor } from 'src/shared/interceptors/set-user.interceptor';
@@ -16,8 +16,8 @@ export class SessionsController {
     }
 
     @Get(':id')
-    getSession(@Param() params, @User() user) {
-        return this.sessionsService.findOne(params.id, user);
+    getSession(@Param('id', ParseUUIDPipe) id: string, @User() user) {
+        return this.sessionsService.findOne(id, user);
     }
 
     @UseInterceptors(SetUserInterceptor)
@@ -28,12 +28,12 @@ export class SessionsController {
 
     @UseInterceptors(SetUserInterceptor)
     @Put(':id')
-    updateSession(@Param() params, @Body() session: SessionDto) {
-        return this.sessionsService.updateSession(params.id, session);
+    updateSession(@Param('id', ParseUUIDPipe) id: string, @Body() session: SessionDto) {
+        return this.sessionsService.updateSession(id, session);
     }
 
     @Delete(':id')
-    deleteSession(@Param() params, @User() user) {
-        return this.sessionsService.deleteSession(params.id, user);
+    deleteSession(@Param('id', ParseUUIDPipe) id: string, @User() user) {
+        return this.sessionsService.deleteSession(id, user);
     }
 }
