@@ -1,11 +1,11 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, createQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reading } from 'src/shared/entities/reading.entity';
 import { ReadingDto } from 'src/shared/dtos/reading.dto';
 import { Session } from 'src/shared/entities/session.entity';
 import { User } from 'src/shared/entities/user.entity';
-import { from } from 'rxjs';
+import { Book } from 'src/shared/entities/book.entity';
 
 
 @Injectable()
@@ -25,6 +25,20 @@ export class ReadingsService {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
         return readings;
+    }
+
+    async findBooksFromUsersReadings(user: User): Promise<Book[]> {
+        let books = null;
+        try {
+            books = await this.readingsRepository
+                .createQueryBuilder('reading')
+                .distinctOn(['reading.book'])
+                .innerJoinAndSelect('reading.book', 'book')
+                .getMany();
+        } catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+        return books;
     }
 
     async findOne(id: string, user: User): Promise<Reading> {

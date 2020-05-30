@@ -15,6 +15,11 @@ export class ReadingsController {
         return this.readingsService.findAll(user);
     }
 
+    @Get('books')
+    getBooksForUser(@User() user) {
+        return this.readingsService.findBooksFromUsersReadings(user);
+    }
+
     @Get(':id')
     getReading(@Param('id', ParseUUIDPipe) id: string, @User() user) {
         return this.readingsService.findOne(id, user);
