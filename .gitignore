@@ -5,6 +5,7 @@ ormconfig.json
 /dist
 /node_modules
 /.build
+/.aws
 
 # Logs
 logs
