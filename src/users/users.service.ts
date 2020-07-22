@@ -11,24 +11,24 @@ export class UsersService {
         private usersRepository: Repository<User>
     ) {}
 
-    async findAll(): Promise<User[]> {
+    async findAll(): Promise<{ data: User[] }> {
         let users = null;
         try {
             users = await this.usersRepository.find();
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return users;
+        return { data: users };
     }
 
-    async findOne(id: string): Promise<User> {
+    async findOne(id: string): Promise<{ data: User }> {
         let user = null;
         try{
             user = await this.usersRepository.findOne(id);
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return user;
+        return { data: user };
     }
 
     async findOneByEmail(email: string): Promise<User> {

@@ -9,6 +9,7 @@ import { ReadingsModule } from './readings/readings.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { SetUserInterceptor } from './shared/interceptors/set-user.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AppendMetadataInterceptor } from './shared/interceptors/append-metadata.interceptor';
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
@@ -23,6 +24,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     {
       provide: APP_INTERCEPTOR,
       useClass: SetUserInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AppendMetadataInterceptor,
     }
   ],
 })

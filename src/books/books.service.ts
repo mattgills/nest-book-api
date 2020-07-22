@@ -15,17 +15,17 @@ export class BooksService {
         private readingsRepository: Repository<Reading>
     ) {}
 
-    async findAll(): Promise<Book[]> {
+    async findAll(): Promise<{ data: Book[] }> {
         let books = null;
         try {
             books = await this.booksRepository.find();
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return books;
+        return { data: books };
     }
 
-    async findOne(id: string): Promise<Book> {
+    async findOne(id: string): Promise<{ data: Book }> {
         let book = null;
         try{
             book = await this.booksRepository.findOne(id);
@@ -33,7 +33,7 @@ export class BooksService {
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return book;
+        return { data: book };
     }
 
     async addBook(book: BookDto) {
@@ -69,7 +69,7 @@ export class BooksService {
         return result;
     }
 
-    async findReadingsByBookId(id: string): Promise<Reading[]> {
+    async findReadingsByBookId(id: string): Promise<{ data: Reading[] }> {
         let readings = null;
         try {
             readings = await this.readingsRepository
@@ -79,6 +79,6 @@ export class BooksService {
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return readings;
+        return { data: readings };
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository, createQueryBuilder } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reading } from 'src/shared/entities/reading.entity';
 import { ReadingDto } from 'src/shared/dtos/reading.dto';
@@ -17,17 +17,17 @@ export class ReadingsService {
         private sessionsRepository: Repository<Session>
     ) {}
 
-    async findAll(user: User): Promise<Reading[]> {
+    async findAll(user: User): Promise<{ data: Reading[] }> {
         let readings = null;
         try {
             readings = await this.readingsRepository.find({ where: { user: user.id } });
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return readings;
+        return { data: readings };
     }
 
-    async findBooksFromUsersReadings(user: User): Promise<Book[]> {
+    async findBooksFromUsersReadings(user: User): Promise<{ data: Book[] }> {
         let readings: Reading[] = null;
         let books: Book[] = null;
         try {
@@ -42,10 +42,10 @@ export class ReadingsService {
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return books;
+        return { data: books };
     }
 
-    async findOne(id: string, user: User): Promise<Reading> {
+    async findOne(id: string, user: User): Promise<{ data: Reading }> {
         let reading = null;
         try{
             reading = await this.readingsRepository.findOne(id, { where: { user: user.id } });
@@ -53,7 +53,7 @@ export class ReadingsService {
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return reading;
+        return { data: reading };
     }
 
     async addReading(reading: ReadingDto) {
@@ -90,7 +90,7 @@ export class ReadingsService {
     }
 
     
-    async findSessionsByReadingId(id: string, user: User): Promise<Reading[]> {
+    async findSessionsByReadingId(id: string, user: User): Promise<{ data: Session[] }> {
         let sessions = null;
         let reading = null;
         try {
@@ -100,6 +100,6 @@ export class ReadingsService {
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return sessions;
+        return { data: sessions };
     }
 }

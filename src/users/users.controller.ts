@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe, HttpCode, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from 'src/shared/dtos/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AppendMetadataInterceptor } from 'src/shared/interceptors/append-metadata.interceptor';
 
 @UseGuards(JwtAuthGuard)
 @Controller('api/users')
@@ -9,27 +10,30 @@ export class UsersController {
     constructor(private usersService: UsersService) {}
 
     @Get()
-    getBooks() {
+    @UseInterceptors(AppendMetadataInterceptor)
+    getUsers() {
         return this.usersService.findAll();
     }
 
     @Get(':id')
-    getBook(@Param('id', ParseUUIDPipe) id: string) {
+    @UseInterceptors(AppendMetadataInterceptor)
+    getUser(@Param('id', ParseUUIDPipe) id: string) {
         return this.usersService.findOne(id);
     }
 
     @Post()
-    addBook(@Body() user: UserDto) {
+    @HttpCode(201)
+    addUser(@Body() user: UserDto) {
         return this.usersService.addUser(user);
     }
 
     // @Put(':id')
-    // updateBook(@Param() params, @Body() user: CreateUserDto) {
+    // updateUser(@Param() params, @Body() user: CreateUserDto) {
     //     return this.usersService.updateUser(params.id, user);
     // }
 
     @Delete(':id')
-    deleteBook(@Param('id', ParseUUIDPipe) id: string) {
+    deleteUser(@Param('id', ParseUUIDPipe) id: string) {
         return this.usersService.deleteUser(id);
     }
 }

@@ -12,17 +12,17 @@ export class SessionsService {
         private sessionsRepository: Repository<Session>
     ) {}
 
-    async findAll(user: User): Promise<Session[]> {
+    async findAll(user: User): Promise<{ data: Session[] }> {
         let sessions = null;
         try {
             sessions = await this.sessionsRepository.find({ where: { user: user.id } });
         } catch(err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return sessions;
+        return { data: sessions };
     }
 
-    async findOne(id: string, user: User): Promise<Session> {
+    async findOne(id: string, user: User): Promise<{ data: Session }> {
         let session = null;
         try{
             session = await this.sessionsRepository.findOne(id, { where: { user: user.id } });
@@ -30,7 +30,7 @@ export class SessionsService {
         } catch (err) {
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
         }
-        return session;
+        return { data: session };
     }
 
     async addSession(session: SessionDto) {
