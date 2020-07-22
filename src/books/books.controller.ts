@@ -33,6 +33,7 @@ export class BooksController {
     }
 
     @Delete(':id')
+    @HttpCode(204)
     deleteBook(@Param('id', ParseUUIDPipe) id: string) {
         return this.booksService.deleteBook(id);
     }

@@ -43,6 +43,7 @@ export class ReadingsController {
     }
 
     @Delete(':id')
+    @HttpCode(204)
     deleteReading(@Param('id', ParseUUIDPipe) id: string, @User() user) {
         return this.readingsService.deleteReading(id, user);
     }

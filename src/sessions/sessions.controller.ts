@@ -37,6 +37,7 @@ export class SessionsController {
     }
 
     @Delete(':id')
+    @HttpCode(204)
     deleteSession(@Param('id', ParseUUIDPipe) id: string, @User() user) {
         return this.sessionsService.deleteSession(id, user);
     }
