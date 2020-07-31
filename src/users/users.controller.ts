@@ -3,7 +3,9 @@ import { UsersService } from './users.service';
 import { UserDto } from 'src/shared/dtos/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AppendMetadataInterceptor } from 'src/shared/interceptors/append-metadata.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @UseGuards(JwtAuthGuard)
 @Controller('api/users')
 export class UsersController {

@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from 'src/shared/entities/book.entity';
 import { BookDto } from 'src/shared/dtos/book.dto';
 import { Reading } from 'src/shared/entities/reading.entity';
-import { Session } from 'src/shared/entities/session.entity';
 
 @Injectable()
 export class BooksService {

@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe, HttpCode, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, ParseUUIDPipe, HttpCode, UseInterceptors, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { BookDto } from 'src/shared/dtos/book.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AppendMetadataInterceptor } from 'src/shared/interceptors/append-metadata.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('books')
 @UseGuards(JwtAuthGuard)
 @Controller('api/books')
 export class BooksController {
@@ -11,7 +13,7 @@ export class BooksController {
 
     @Get()
     @UseInterceptors(AppendMetadataInterceptor)
-    getBooks() {
+    getBooks(@Query('page') page: string) {
         return this.booksService.findAll();
     }
 

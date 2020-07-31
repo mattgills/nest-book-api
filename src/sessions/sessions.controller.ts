@@ -5,7 +5,9 @@ import { SetUserInterceptor } from 'src/shared/interceptors/set-user.interceptor
 import { User } from 'src/shared/decorators/user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AppendMetadataInterceptor } from 'src/shared/interceptors/append-metadata.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('sessions')
 @UseGuards(JwtAuthGuard)
 @Controller('api/sessions')
 export class SessionsController {

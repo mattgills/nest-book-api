@@ -5,7 +5,9 @@ import { ReadingDto } from 'src/shared/dtos/reading.dto';
 import { SetUserInterceptor } from 'src/shared/interceptors/set-user.interceptor';
 import { User } from 'src/shared/decorators/user.decorator';
 import { AppendMetadataInterceptor } from 'src/shared/interceptors/append-metadata.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('readings')
 @UseGuards(JwtAuthGuard)
 @Controller('api/readings')
 export class ReadingsController {
